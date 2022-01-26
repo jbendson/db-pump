@@ -8,7 +8,7 @@ Bulk collection and binding are used to optimize performance. However, using str
 
 ## Installation
 
-Execute [db_pump.sql](db_pump.sql) to create the db_pump package
+Execute [db_pump.sql](DB_PUMP.sql) to create the db_pump package
 
 ## Usage
 Example schema:
@@ -76,6 +76,11 @@ begin
   end loop;
 end;
 /
+```
+
+- Retrieve the generated PL/SQL block
+```
+exec dbms_output.put_line(db_pump.get_pump_sql());
 ```
 
 ## Limitations
