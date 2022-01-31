@@ -2,9 +2,9 @@
 
 A PL/SQL package for moving data from source to target table(s)
 
-The package enables a simple pattern for high performance data manipulation based on a source query. It generates and executes an anonymous PL/SQL block that uses a cursor to iterate through the source query and bind the result set to 1 to n target DML statements.
+The package facilitates a simple pattern for high performance data manipulation based on a source query. It generates and executes an anonymous PL/SQL block that uses a cursor to iterate through the source query and bind the result set to 1 or more target DML statements.
 
-Bulk collection and binding are used to optimize performance. However, using straight SQL will almost always be fastest.
+A note on performance - Bulk collection and binding are used to optimize performance. However, using straight SQL will almost always be the fastest approach to accomplish a given task (insert from select statement, etc).
 
 ## Installation
 
@@ -44,7 +44,7 @@ exec db_pump.pump();
 ```
 
 ## Options
-- Reset the target SQL statements. PL/SQL package is a singleton. The following will remove all targets
+- Reset the target SQL statements. A PL/SQL package is a singleton on a given session, so targets must be reset if there was prior use. The following will remove all targets
 ```
 exec db_pump.reset_targets();
 ```
@@ -57,6 +57,25 @@ exec db_pump.set_batch_size(100);
 - Set to commit after each target batch is executed. Default is false
 ```
 exec db_pump.set_batch_commit(true); 
+```
+
+- Example results
+```
+SELECT * FROM target_table1;
+
+        D1 D2         D3                D4
+---------- ---------- --------- ----------
+        10 hello      25-JAN-22          1
+        20 world      25-JAN-22          2
+        30 !          25-JAN-22          3
+		
+SELECT * FROM target_table2;
+
+        D1 D2         D3
+---------- ---------- ---------
+        10 hello      25-JAN-22
+        20 world      25-JAN-22
+        30 !          25-JAN-22
 ```
 
 - Retrieve rowcounts from source and target statements. The db_pump.pump procedure has an overload with OUT parameters for source count (NUMBER) and counts for each target (array of NUMBER)
