@@ -41,6 +41,25 @@ exec db_pump.add_target('UPDATE target_table2 SET d2 = :s2, d3 = :s3 WHERE d1 = 
 3. Execute the data pump
 ```
 exec db_pump.pump();
+
+
+--- Example results ---
+
+SELECT * FROM target_table1;
+
+        D1 D2         D3                D4
+---------- ---------- --------- ----------
+        10 hello      25-JAN-22          1
+        20 world      25-JAN-22          2
+        30 !          25-JAN-22          3
+		
+SELECT * FROM target_table2;
+
+        D1 D2         D3
+---------- ---------- ---------
+        10 hello      25-JAN-22
+        20 world      25-JAN-22
+        30 !          25-JAN-22
 ```
 
 ## Options
@@ -57,25 +76,6 @@ exec db_pump.set_batch_size(100);
 - Set to commit after each target batch is executed. Default is false
 ```
 exec db_pump.set_batch_commit(true); 
-```
-
-- Example results
-```
-SELECT * FROM target_table1;
-
-        D1 D2         D3                D4
----------- ---------- --------- ----------
-        10 hello      25-JAN-22          1
-        20 world      25-JAN-22          2
-        30 !          25-JAN-22          3
-		
-SELECT * FROM target_table2;
-
-        D1 D2         D3
----------- ---------- ---------
-        10 hello      25-JAN-22
-        20 world      25-JAN-22
-        30 !          25-JAN-22
 ```
 
 - Retrieve rowcounts from source and target statements. The db_pump.pump procedure has an overload with OUT parameters for source count (NUMBER) and counts for each target (array of NUMBER)
